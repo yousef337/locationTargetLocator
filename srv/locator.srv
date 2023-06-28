@@ -1,0 +1,6 @@
+float64 world_width
+float64 world_height
+float64 robot_fit
+ObjectLocationDescription[] location
+---
+geometry_msgs/Pose2D pose

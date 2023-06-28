@@ -1,4 +1,7 @@
+#!/usr/bin/env python3
 from sympy import symbols, diff, sqrt, Piecewise, Abs, cos, plotting
+import rospy
+from location_locator.srv import locator
 
 x, y = symbols('x y', real=True)
 def surfaceStep(center):
@@ -51,13 +54,18 @@ def fitting(world, size):
     return f
 
 
-objFit = 2
-objs = [[5,5, 1 + 0.64 - 1/objFit, 1 + 0.64 - 1/objFit]]
-obj = objectsGraph(objs)
-score = pointScoreMSQD(objs)
-worldObjectMap = world(10, 10, objFit) - obj
+def LocateLocation():
+    objFit = 2
+    objs = [[5,5, 1 + 0.64 - 1/objFit, 1 + 0.64 - 1/objFit]]
+    obj = objectsGraph(objs)
+    score = pointScoreMSQD(objs)
+    worldObjectMap = world(10, 10, objFit) - obj
 
-plotting.plot3d(worldObjectMap*score, (x, 0, 10), (y, 0, 10))
-# plotting.plot3d(worldObjectMap, (x, 0, 10), (y, 0, 10))
+    plotting.plot3d(worldObjectMap*score, (x, 0, 10), (y, 0, 10))
+    # plotting.plot3d(worldObjectMap, (x, 0, 10), (y, 0, 10))
 
-# plotting.plot3d(world()), (x, -5, 5), (y, -5, 5)
+    # plotting.plot3d(world()), (x, -5, 5), (y, -5, 5)
+
+
+rospy.Service('LocateLocation', locator, LocateLocation)
+rospy.spin()
